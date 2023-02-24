@@ -1,0 +1,123 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model big_surprise_coupon {
+  id          Int       @id @default(autoincrement())
+  name        String?   @db.VarChar(255)
+  coupon_img  String?   @db.VarChar(255)
+  discount    String?   @db.VarChar(255)
+  pt_cost     Decimal?  @db.Decimal(10, 2)
+  status      Int?
+  redeem_date DateTime? @db.DateTime(0)
+  user_id     Int?
+  user        user?     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "big_surprise_coupon_ibfk_1")
+
+  @@index([user_id], map: "user_id")
+}
+
+model cheat_coupon {
+  id          Int       @id @default(autoincrement())
+  name        String?   @db.VarChar(255)
+  coupon_img  String?   @db.VarChar(255)
+  discount    String?   @db.VarChar(255)
+  pt_cost     Decimal?  @db.Decimal(10, 2)
+  status      Int?
+  redeem_date DateTime? @db.DateTime(0)
+  user_id     Int?
+  user        user?     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cheat_coupon_ibfk_1")
+
+  @@index([user_id], map: "user_id")
+}
+
+model emegency {
+  id                   Int       @id @default(autoincrement())
+  emegency_name        String?   @db.VarChar(255)
+  node_id              Int?
+  user_id              Int?
+  emegency_date        DateTime? @db.DateTime(0)
+  emegency_description String?   @db.VarChar(255)
+  user                 user?     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "emegency_ibfk_1")
+  node                 node?     @relation(fields: [node_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "emegency_ibfk_2")
+
+  @@index([node_id], map: "node_id")
+  @@index([user_id], map: "user_id")
+}
+
+model food_coupon {
+  id          Int       @id @default(autoincrement())
+  name        String?   @db.VarChar(255)
+  coupon_img  String?   @db.VarChar(255)
+  discount    String?   @db.VarChar(255)
+  pt_cost     Decimal?  @db.Decimal(10, 2)
+  status      Int?
+  redeem_date DateTime? @db.DateTime(0)
+  user_id     Int?
+  user        user?     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "food_coupon_ibfk_1")
+
+  @@index([user_id], map: "user_id")
+}
+
+model healthy_coupon {
+  id          Int       @id @default(autoincrement())
+  name        String?   @db.VarChar(255)
+  coupon_img  String?   @db.VarChar(255)
+  discount    String?   @db.VarChar(255)
+  pt_cost     Decimal?  @db.Decimal(10, 2)
+  status      Int?
+  redeem_date DateTime? @db.DateTime(0)
+  user_id     Int?
+  user        user?     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "healthy_coupon_ibfk_1")
+
+  @@index([user_id], map: "user_id")
+}
+
+model node {
+  id          Int        @id @default(autoincrement())
+  node_name   String?    @db.VarChar(255)
+  description String?    @db.VarChar(255)
+  status      Int?
+  donation    donation[]
+  emegency    emegency[]
+}
+
+model user {
+  id                  Int                   @id @default(autoincrement())
+  username            String?               @db.VarChar(255)
+  password            String?               @db.VarChar(255)
+  email               String?               @db.VarChar(255)
+  prefix              String?               @db.VarChar(255)
+  firstname           String?               @db.VarChar(255)
+  surname             String?               @db.VarChar(255)
+  healthy_point       Decimal?              @db.Decimal(10, 2)
+  cheat_point         Decimal?              @db.Decimal(10, 2)
+  daily_cheat         Int?
+  daily_food          Int?
+  daily_date          DateTime?             @db.DateTime(0)
+  daily_select        Int?
+  last_donation       DateTime?             @db.DateTime(0)
+  cheat_day_quota     Int?
+  big_surprise_coupon big_surprise_coupon[]
+  cheat_coupon        cheat_coupon[]
+  donation            donation[]
+  emegency            emegency[]
+  food_coupon         food_coupon[]
+  healthy_coupon      healthy_coupon[]
+}
+
+model donation {
+  id            Int       @id @default(autoincrement())
+  donation_date DateTime? @db.DateTime(0)
+  node_id       Int?
+  user_id       Int?
+  user          user?     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "donation_ibfk_1")
+  node          node?     @relation(fields: [node_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "donation_ibfk_2")
+
+  @@index([node_id], map: "node_id")
+  @@index([user_id], map: "user_id")
+}
