@@ -17,7 +17,7 @@ app.use(function (req, res, next) {
 
 
 app.get("/", (req, res) => {
-    res.json({ message: "Bloodee's NodeJS" });
+    res.json({ message: "Bloodee's Backend Services" });
 });
 
 // set port, listen for requests
